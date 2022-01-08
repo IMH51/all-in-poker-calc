@@ -1,7 +1,4 @@
 /** @jsxImportSource theme-ui */
+import { Themed } from 'theme-ui';
 
-export const App = () => (
-    <div data-testid="app" sx={{ color: 'text', background: 'background' }}>
-        Root Element
-    </div>
-);
+export const App = () => <Themed.div data-testid="app">Root Element</Themed.div>;
