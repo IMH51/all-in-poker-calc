@@ -27,10 +27,14 @@ module.exports = {
             {
                 test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
                 type: 'asset/resource',
+                exclude: /node_modules/,
+                use: ['file-loader?name=[name].[ext]'],
             },
             {
                 test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
-                type: 'asset/inline',
+                type: 'asset/resource',
+                exclude: /node_modules/,
+                use: ['file-loader?name=[name].[ext]'],
             },
         ],
     },
@@ -39,13 +43,13 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, './src/index.html'),
+            template: path.resolve(__dirname, './public/index.html'),
         }),
         new CleanWebpackPlugin(),
     ],
     devServer: {
-        static: path.join(__dirname, './src'),
-        port: 3001,
+        static: path.join(__dirname, 'public'),
+        port: 3000,
         hot: 'only',
         compress: true,
         open: true,
