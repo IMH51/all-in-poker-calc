@@ -1,0 +1,9 @@
+{
+  "name": "all-in-poker-calc",
+  "version": "1.0.0",
+  "description": "Drag and Drop Poker Calculator",
+  "main": "src/index.tsx",
+  "repository": "git@github.com:IMH51/all-in-poker-calc.git",
+  "author": "Ian Harrison",
+  "license": "MIT"
+}
