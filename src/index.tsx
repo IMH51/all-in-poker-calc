@@ -1,9 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-const appRoot = document.getElementById('root')
+const appRoot = document.getElementById('root');
 
-render( 
-  <div>App is running</div>, 
-  appRoot
-);
+render(<div>Root Element</div>, appRoot);
