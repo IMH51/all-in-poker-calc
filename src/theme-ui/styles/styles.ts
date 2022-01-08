@@ -9,4 +9,9 @@ export const styles = {
         color: colors.text,
         background: colors.background,
     },
+    img: {
+        width: '75px',
+        zIndex: 1,
+        cursor: 'pointer',
+    },
 };

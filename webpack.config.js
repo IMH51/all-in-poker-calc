@@ -25,16 +25,8 @@ module.exports = {
                 use: ['style-loader', 'css-loader', 'sass-loader'],
             },
             {
-                test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
                 type: 'asset/resource',
-                exclude: /node_modules/,
-                use: ['file-loader?name=[name].[ext]'],
-            },
-            {
-                test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
-                type: 'asset/resource',
-                exclude: /node_modules/,
-                use: ['file-loader?name=[name].[ext]'],
             },
         ],
     },
