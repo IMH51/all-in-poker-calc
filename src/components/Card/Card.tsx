@@ -2,7 +2,7 @@
 import { FunctionComponent } from 'react';
 import { Themed } from 'theme-ui';
 
-import { cardCodes } from '../../utils/state/cardData';
+import { cardCodes } from '../../fixtures';
 
 export const Card: FunctionComponent<CardProps> = ({ code }) =>
     cardCodes.includes(code) ? <Themed.img src={getCard(code)} onClick={() => alert(code)} /> : null;

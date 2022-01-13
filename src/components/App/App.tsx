@@ -2,7 +2,7 @@
 import { useState, FunctionComponent } from 'react';
 import { Themed } from 'theme-ui';
 import { Card } from '../Card';
-import { cardData } from '../../utils/state/cardData';
+import { cardData } from '../../fixtures/';
 
 export const App: FunctionComponent = () => {
     const [cards] = useState(cardData);
