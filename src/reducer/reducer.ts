@@ -1,25 +1,33 @@
 import type { Reducer } from 'react';
+import { CardObject, CardArea } from '../fixtures';
 import { initialState, InitialState } from './state';
-import { ADD_CARD, REMOVE_CARD, RESET_TABLE } from './types';
-import { ReducerAction } from './actions';
+import { ADD_CARD, RESET_TABLE } from './types';
+import { mapCardState } from './mappers';
 
-export const reducer: Reducer<InitialState, ReducerAction> = (state, action) => {
+export const reducer: ReducerType = (state, action) => {
     const { type, payload } = action;
-    const { area, card } = payload;
+    const { odds, ...cardState } = state;
     switch (type) {
         case ADD_CARD:
             return {
-                ...state,
-                [area]: [...state[area], card],
-            };
-        case REMOVE_CARD:
-            return {
-                ...state,
-                [area]: [...state[area].filter(({ code }) => code !== card.code)],
+                ...mapCardState(cardState, payload),
+                odds,
             };
         case RESET_TABLE:
             return initialState;
         default:
             return state;
     }
+};
+
+export type ReducerType = Reducer<InitialState, ReducerAction>;
+
+export type ReducerAction = {
+    type: string;
+    payload: ReducerPayload;
+};
+
+export type ReducerPayload = {
+    area: CardArea;
+    card: CardObject;
 };
