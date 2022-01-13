@@ -7,7 +7,7 @@ export const initialState = {
     odds: {},
 };
 
-export type initialState = {
+export type InitialState = {
     cards: CardArray;
     [PLAYER_1]: CardArray;
     [PLAYER_2]: CardArray;
