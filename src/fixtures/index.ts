@@ -4,7 +4,9 @@ export const PLAYER_1 = 'Player 1';
 
 export const PLAYER_2 = 'Player 2';
 
-export type CardArea = typeof PLAYER_2 | typeof PLAYER_1 | typeof CARDS;
+export type PlayerArea = typeof PLAYER_2 | typeof PLAYER_1;
+
+export type CardArea = PlayerArea | typeof CARDS;
 
 export const cardData: CardArray = [
     { name: 'Ace Diamonds', code: 'Ad' },

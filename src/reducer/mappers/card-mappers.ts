@@ -1,20 +1,27 @@
 import { ReducerPayload } from '../reducer';
-import { CardState, InitialState } from '..';
-import { CardArea } from '../../fixtures';
+import { InitialState, PlayerState } from '..';
+import { PlayerArea } from '../../fixtures';
 
-export const mapCardState = (cardState: CardState, payload: ReducerPayload) => {
-    const cardStateKeys = Object.keys(cardState) as CardArea[];
+export const mapCardState = (playerState: PlayerState, payload: ReducerPayload) => {
+    const cardStateKeys = Object.keys(playerState) as PlayerArea[];
     return cardStateKeys.reduce(
         (newState, key) => ({
             ...newState,
-            [key]: mapCurrentKey(key, cardState, payload),
+            [key]: mapCurrentKey(key, playerState, payload),
         }),
         {},
     ) as InitialState;
 };
 
-const mapCurrentKey = (key: CardArea, state: CardState, payload: ReducerPayload) => {
+const mapCurrentKey = (key: PlayerArea, state: PlayerState, payload: ReducerPayload) => {
     const { area, card } = payload;
-    const currentArea = state[area] || [];
-    return key === area ? [...currentArea, card] : currentArea.filter(({ code }) => code !== card.code);
+    const currentArea = [...state[key]];
+
+    if (key === area) {
+        const cardIsInCurrentArea = currentArea.map(({ code }) => code).includes(card.code);
+
+        return cardIsInCurrentArea ? currentArea : [...currentArea, card];
+    } else {
+        return currentArea.filter(({ code }) => code !== card.code);
+    }
 };

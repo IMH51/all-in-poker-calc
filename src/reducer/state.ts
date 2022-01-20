@@ -7,17 +7,20 @@ export const initialState: InitialState = {
     odds: {},
 };
 
-export type InitialState = {
-    odds: OddsState;
-} & CardState;
+export type InitialState = CardState & PlayerState & OddsState;
 
 export type CardState = {
     [CARDS]: CardArray;
+};
+
+export type PlayerState = {
     [PLAYER_1]: CardArray;
     [PLAYER_2]: CardArray;
 };
 
 export type OddsState = {
-    [PLAYER_1]?: number;
-    [PLAYER_2]?: number;
+    odds: {
+        [PLAYER_1]?: number;
+        [PLAYER_2]?: number;
+    };
 };
