@@ -1,4 +1,4 @@
-export * from './reducer';
+export * from './reducers';
 export * from './context';
 export * from './state';
 export * from './types';

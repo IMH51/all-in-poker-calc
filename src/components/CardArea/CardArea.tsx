@@ -1,22 +1,37 @@
 /** @jsxImportSource theme-ui */
-import { FunctionComponent } from 'react';
-import { CardArea as CardAreaType, CardArray, CardObject } from '../../fixtures';
+import { FunctionComponent, useMemo, useCallback } from 'react';
+import { GameArea, CardObject, TABLE } from '../../fixtures';
 import { Card } from '../Card';
 import { useDrop } from 'react-dnd';
 import { ADD_CARD, useReducerContext } from '../../reducer';
 
-export const CardArea: FunctionComponent<CardAreaProps> = ({ area, cards }) => {
-    const [, dispatch] = useReducerContext();
-    const [{ isOver }, ref] = useDrop(() => ({
+export const CardArea: FunctionComponent<CardAreaProps> = ({ area, limit }) => {
+    const [state, dispatch] = useReducerContext();
+
+    const cards = useMemo(() => [...(state?.[area] || [])], [state, area]);
+
+    const dropCallback = useCallback(
+        (card: CardObject) => {
+            if (cards.length < limit) {
+                dispatch && dispatch({ type: ADD_CARD, payload: { area, card } });
+            } else {
+                alert("You can't add any more cards to this area!");
+            }
+        },
+        [area, cards.length, limit, dispatch],
+    );
+
+    const [{ isOver }, ref] = useDrop({
         accept: 'CARD',
-        drop: (card: CardObject) => dispatch && dispatch({ type: ADD_CARD, payload: { area, card } }),
+        drop: dropCallback,
         collect: (monitor) => ({
             isOver: monitor.isOver(),
         }),
-    }));
+    });
+
     return (
         <div>
-            <h2>{area}</h2>
+            <h2 sx={{ textAlign: 'center' }}>{area}</h2>
             <div
                 ref={ref}
                 sx={{
@@ -24,11 +39,11 @@ export const CardArea: FunctionComponent<CardAreaProps> = ({ area, cards }) => {
                     display: 'flex',
                     flexDirection: 'row',
                     flexWrap: 'wrap',
+                    gap: '20px',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    maxWidth: '800px',
-                    minWidth: '300px',
-                    minHeight: '200px',
+                    width: area === TABLE ? '470px' : '190px',
+                    height: '120px',
                     border: '3px solid white',
                     borderRadius: '4px',
                     margin: '20px',
@@ -44,6 +59,6 @@ export const CardArea: FunctionComponent<CardAreaProps> = ({ area, cards }) => {
 };
 
 type CardAreaProps = {
-    area: CardAreaType;
-    cards: CardArray;
+    area: GameArea;
+    limit: number;
 };

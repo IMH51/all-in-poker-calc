@@ -4,9 +4,17 @@ export const PLAYER_1 = 'Player 1';
 
 export const PLAYER_2 = 'Player 2';
 
+export const TABLE = 'Table';
+
+export const SPLIT_POT = 'Split Pot';
+
+export type GameArea = PlayerArea | typeof TABLE;
+
 export type PlayerArea = typeof PLAYER_2 | typeof PLAYER_1;
 
-export type CardArea = PlayerArea | typeof CARDS;
+export type OddsType = PlayerArea | typeof SPLIT_POT;
+
+export type CardArea = GameArea | typeof CARDS;
 
 export const cardData: CardArray = [
     { name: 'Ace Diamonds', code: 'Ad' },

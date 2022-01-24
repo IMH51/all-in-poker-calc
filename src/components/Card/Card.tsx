@@ -6,10 +6,10 @@ import { useDrag } from 'react-dnd';
 import { cardCodes, CardObject } from '../../fixtures';
 
 export const Card: FunctionComponent<CardProps> = ({ card }) => {
-    const [, ref] = useDrag(() => ({
+    const [, ref] = useDrag({
         type: 'CARD',
         item: card,
-    }));
+    });
 
     const { code } = card;
 

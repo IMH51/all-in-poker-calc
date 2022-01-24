@@ -1,22 +1,27 @@
 /** @jsxImportSource theme-ui */
-import { CardObject, CARDS, PLAYER_1, PLAYER_2 } from '../../fixtures';
+import { CardObject, CARDS, PLAYER_1, PLAYER_2, TABLE } from '../../fixtures';
 import { useReducerContext, ADD_CARD } from '../../reducer';
 import { Card } from '../Card';
 import { useDrop } from 'react-dnd';
 
 export const CardScroller = () => {
     const [state, dispatch] = useReducerContext();
-    const { [CARDS]: cards = [], [PLAYER_1]: player1 = [], [PLAYER_2]: player2 = [] } = state || {};
+    const {
+        [CARDS]: cards = [],
+        [PLAYER_1]: player1 = [],
+        [PLAYER_2]: player2 = [],
+        [TABLE]: table = [],
+    } = state || {};
 
-    const [{ isOver }, ref] = useDrop(() => ({
+    const [{ isOver }, ref] = useDrop({
         accept: 'CARD',
         drop: (card: CardObject) => dispatch && dispatch({ type: ADD_CARD, payload: { area: CARDS, card } }),
         collect: (monitor) => ({
             isOver: monitor.isOver(),
         }),
-    }));
+    });
 
-    const playerCardCodes = [...player1, ...player2].map(({ code }) => code);
+    const playerCardCodes = [...player1, ...player2, ...table].map(({ code }) => code);
     const availableCards = cards.filter((card) => !playerCardCodes.includes(card.code));
 
     return (
