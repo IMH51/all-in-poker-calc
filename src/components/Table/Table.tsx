@@ -1,9 +1,12 @@
 /** @jsxImportSource theme-ui */
-import { PLAYER_1, PLAYER_2, TABLE, GameArea } from '../../fixtures';
+import { CARDS, ODDS, TABLE, GameArea } from '../../fixtures';
+import { useReducerContext } from '../../reducer';
 import { CardArea } from '../CardArea';
 
 export const Table = () => {
-    const playerArray: GameArea[] = [PLAYER_1, TABLE, PLAYER_2];
+    const [state = {}] = useReducerContext();
+    const playerArray = Object.keys(state).filter((key) => ![CARDS, ODDS].includes(key)) as GameArea[];
+
     return (
         <div
             sx={{

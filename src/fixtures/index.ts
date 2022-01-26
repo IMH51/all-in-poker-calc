@@ -8,6 +8,8 @@ export const TABLE = 'Table';
 
 export const SPLIT_POT = 'Split Pot';
 
+export const ODDS = 'Odds';
+
 export type GameArea = PlayerArea | typeof TABLE;
 
 export type PlayerArea = typeof PLAYER_2 | typeof PLAYER_1;

@@ -3,12 +3,15 @@ import { FunctionComponent, useMemo, useCallback } from 'react';
 import { GameArea, CardObject, TABLE } from '../../fixtures';
 import { Card } from '../Card';
 import { useDrop } from 'react-dnd';
-import { ADD_CARD, useReducerContext } from '../../reducer';
+import { ADD_CARD, REMOVE_CARD, useReducerContext } from '../../reducer';
 
 export const CardArea: FunctionComponent<CardAreaProps> = ({ area, limit }) => {
     const [state, dispatch] = useReducerContext();
 
     const cards = useMemo(() => [...(state?.[area] || [])], [state, area]);
+
+    const removeCardOnClick = (card: CardObject) => () =>
+        dispatch && dispatch({ type: REMOVE_CARD, payload: { area, card } });
 
     const dropCallback = useCallback(
         (card: CardObject) => {
@@ -51,7 +54,7 @@ export const CardArea: FunctionComponent<CardAreaProps> = ({ area, limit }) => {
                 }}
             >
                 {cards.map((card) => (
-                    <Card key={card.name} card={card} />
+                    <Card key={card.name} card={card} onClick={removeCardOnClick(card)} />
                 ))}
             </div>
         </div>

@@ -1,4 +1,4 @@
-import { PLAYER_1, PLAYER_2, TABLE } from '../../fixtures';
+import { PLAYER_1, PLAYER_2, TABLE, ODDS } from '../../fixtures';
 import { ADD_CARD } from '../types';
 import { mapOdds } from '../mappers';
 import { ReducerType } from '.';
@@ -12,12 +12,12 @@ export const oddsReducer: ReducerType = (state, action) => {
                 const gameState = { [PLAYER_1]: player1, [PLAYER_2]: player2, [TABLE]: table };
                 return {
                     ...state,
-                    odds: mapOdds(gameState),
+                    [ODDS]: mapOdds(gameState),
                 };
             } else {
                 return {
                     ...state,
-                    odds: {},
+                    [ODDS]: {},
                 };
             }
         default:

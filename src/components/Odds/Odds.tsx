@@ -1,10 +1,10 @@
 /** @jsxImportSource theme-ui */
 import { initialState, useReducerContext, RESET_TABLE } from '../../reducer';
-import { OddsType } from '../../fixtures';
+import { OddsType, ODDS } from '../../fixtures';
 
 export const Odds = () => {
     const [state, dispatch] = useReducerContext();
-    const { odds = {} } = state || {};
+    const { [ODDS]: odds = {} } = state || {};
     const oddsAreas = Object.keys(odds);
 
     return (
