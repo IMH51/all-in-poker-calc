@@ -11,6 +11,7 @@ export const Odds = () => {
         <div sx={{ margin: '20px 0', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <button
                 sx={{
+                    margin: '10px 0',
                     padding: '10px',
                     background: 'green',
                     color: 'white',
@@ -32,7 +33,10 @@ export const Odds = () => {
                     ))}
                 </div>
             ) : (
-                'There must be two cards on each players hand and at least 3 on the table before odds can be calculated'
+                <p>
+                    There must be two cards on each players hand and at least 3 on the table before odds can be
+                    calculated
+                </p>
             )}
         </div>
     );

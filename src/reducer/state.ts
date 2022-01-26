@@ -1,4 +1,15 @@
-import { cardData, CardArray, PLAYER_1, PLAYER_2, CARDS, SPLIT_POT, TABLE, ODDS } from '../fixtures';
+import {
+    cardData,
+    CardArray,
+    PLAYER_1,
+    PLAYER_2,
+    CARDS,
+    SPLIT_POT,
+    TABLE,
+    ODDS,
+    SELECTED_CARD,
+    CardObject,
+} from '../fixtures';
 
 export const initialState: InitialState = {
     [CARDS]: cardData,
@@ -8,7 +19,7 @@ export const initialState: InitialState = {
     [ODDS]: {},
 };
 
-export type InitialState = { [ODDS]: OddsState } & CardState & GameState;
+export type InitialState = { [ODDS]: OddsState; [SELECTED_CARD]?: CardObject } & CardState & GameState;
 
 export type CardState = {
     [CARDS]: CardArray;

@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
-import { CardObject, CARDS, PLAYER_1, PLAYER_2, TABLE } from '../../fixtures';
-import { useReducerContext, ADD_CARD } from '../../reducer';
+import { CardObject, CARDS, PLAYER_1, PLAYER_2, SELECTED_CARD, TABLE } from '../../fixtures';
+import { useReducerContext, ADD_CARD, SET_SELECTED_CARD } from '../../reducer';
 import { Card } from '../Card';
 import { useDrop } from 'react-dnd';
 
@@ -11,6 +11,7 @@ export const CardScroller = () => {
         [PLAYER_1]: player1 = [],
         [PLAYER_2]: player2 = [],
         [TABLE]: table = [],
+        [SELECTED_CARD]: selectedCard,
     } = state || {};
 
     const [{ isOver }, ref] = useDrop({
@@ -22,7 +23,11 @@ export const CardScroller = () => {
     });
 
     const playerCardCodes = [...player1, ...player2, ...table].map(({ code }) => code);
+
     const availableCards = cards.filter((card) => !playerCardCodes.includes(card.code));
+
+    const setSelectedCardOnClick = (card: CardObject) => () =>
+        dispatch && dispatch({ type: SET_SELECTED_CARD, payload: { card } });
 
     return (
         <div
@@ -39,9 +44,14 @@ export const CardScroller = () => {
                 '::-webkit-scrollbar': { background: 'transparent' },
             }}
         >
-            <div sx={{ display: 'flex', wrap: 'nowrap', gap: '10px', margin: '5px 10px' }}>
+            <div sx={{ display: 'flex', wrap: 'nowrap', gap: '10px', margin: '5px 0' }}>
                 {availableCards.map((card) => (
-                    <Card key={card.name} card={card} />
+                    <Card
+                        key={card.name}
+                        card={card}
+                        selected={card === selectedCard}
+                        onClick={setSelectedCardOnClick(card)}
+                    />
                 ))}
             </div>
         </div>

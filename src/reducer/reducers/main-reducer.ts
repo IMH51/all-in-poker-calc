@@ -15,6 +15,6 @@ export type ReducerAction = {
 };
 
 export type ReducerPayload = {
-    area: CardArea;
+    area?: CardArea;
     card: CardObject;
 };

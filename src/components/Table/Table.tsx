@@ -1,11 +1,11 @@
 /** @jsxImportSource theme-ui */
-import { CARDS, ODDS, TABLE, GameArea } from '../../fixtures';
+import { CARDS, ODDS, TABLE, GameArea, SELECTED_CARD } from '../../fixtures';
 import { useReducerContext } from '../../reducer';
 import { CardArea } from '../CardArea';
 
 export const Table = () => {
     const [state = {}] = useReducerContext();
-    const playerArray = Object.keys(state).filter((key) => ![CARDS, ODDS].includes(key)) as GameArea[];
+    const playerArray = Object.keys(state).filter((key) => ![CARDS, ODDS, SELECTED_CARD].includes(key)) as GameArea[];
 
     return (
         <div
