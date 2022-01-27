@@ -3,7 +3,7 @@ import { FunctionComponent, useMemo, useCallback, KeyboardEvent } from 'react';
 import { GameArea, CardObject, TABLE, SELECTED_CARD } from '../../fixtures';
 import { Card } from '../Card';
 import { useDrop } from 'react-dnd';
-import { ADD_CARD, REMOVE_CARD, useReducerContext } from '../../reducer';
+import { ADD_CARD, REMOVE_CARD, SET_SELECTED_CARD, useReducerContext } from '../../reducer';
 
 export const CardArea: FunctionComponent<CardAreaProps> = ({ area, limit }) => {
     const [state, dispatch] = useReducerContext();
@@ -14,11 +14,20 @@ export const CardArea: FunctionComponent<CardAreaProps> = ({ area, limit }) => {
 
     const canAddSelectedCard = useMemo(() => selectedCard && cards.length < limit, [selectedCard, cards, limit]);
 
-    const addCardOnAreaClick = () =>
-        dispatch && selectedCard && dispatch({ type: ADD_CARD, payload: { area, card: selectedCard } });
+    const addCardOnAreaClick = useCallback(
+        () => dispatch && selectedCard && dispatch({ type: ADD_CARD, payload: { area, card: selectedCard } }),
+        [area, dispatch, selectedCard],
+    );
 
-    const removeCardOnClick = (card: CardObject) => () =>
-        dispatch && dispatch({ type: REMOVE_CARD, payload: { area, card } });
+    const removeCardOnClick = useCallback(
+        (card: CardObject) => () => dispatch && dispatch({ type: REMOVE_CARD, payload: { area, card } }),
+        [area, dispatch],
+    );
+
+    const addCardOnClick = useCallback(
+        (card: CardObject) => () => dispatch && dispatch({ type: SET_SELECTED_CARD, payload: { card } }),
+        [dispatch],
+    );
 
     const dropCallback = useCallback(
         (card: CardObject) => {
@@ -28,7 +37,7 @@ export const CardArea: FunctionComponent<CardAreaProps> = ({ area, limit }) => {
                 alert("You can't add any more cards to this area!");
             }
         },
-        [area, cards.length, limit, dispatch],
+        [area, cards, limit, dispatch],
     );
 
     const [{ isOver }, ref] = useDrop({
@@ -72,7 +81,7 @@ export const CardArea: FunctionComponent<CardAreaProps> = ({ area, limit }) => {
                     <Card
                         key={card.name}
                         card={card}
-                        onClick={canAddSelectedCard ? undefined : removeCardOnClick(card)}
+                        onClick={selectedCard && selectedCard !== card ? addCardOnClick(card) : removeCardOnClick(card)}
                     />
                 ))}
             </div>

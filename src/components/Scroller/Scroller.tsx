@@ -1,6 +1,7 @@
 /** @jsxImportSource theme-ui */
+import { useMemo, useCallback } from 'react';
 import { CardObject, CARDS, PLAYER_1, PLAYER_2, SELECTED_CARD, TABLE } from '../../fixtures';
-import { useReducerContext, ADD_CARD, SET_SELECTED_CARD } from '../../reducer';
+import { useReducerContext, ADD_CARD, SET_SELECTED_CARD, RESET_SELECTED_CARD } from '../../reducer';
 import { Card } from '../Card';
 import { useDrop } from 'react-dnd';
 
@@ -22,12 +23,22 @@ export const CardScroller = () => {
         }),
     });
 
-    const playerCardCodes = [...player1, ...player2, ...table].map(({ code }) => code);
+    const playerCardCodes = useMemo(
+        () => [...player1, ...player2, ...table].map(({ code }) => code),
+        [player1, player2, table],
+    );
 
-    const availableCards = cards.filter((card) => !playerCardCodes.includes(card.code));
+    const availableCards = useMemo(
+        () => cards.filter((card) => !playerCardCodes.includes(card.code)),
+        [cards, playerCardCodes],
+    );
 
-    const setSelectedCardOnClick = (card: CardObject) => () =>
-        dispatch && dispatch({ type: SET_SELECTED_CARD, payload: { card } });
+    const setSelectedCardOnClick = useCallback(
+        (card: CardObject) => () => dispatch && dispatch({ type: SET_SELECTED_CARD, payload: { card } }),
+        [dispatch],
+    );
+
+    const resetSelectedCardOnClick = useCallback(() => dispatch && dispatch({ type: RESET_SELECTED_CARD }), [dispatch]);
 
     return (
         <div
@@ -50,7 +61,11 @@ export const CardScroller = () => {
                         key={card.name}
                         card={card}
                         selected={card === selectedCard}
-                        onClick={setSelectedCardOnClick(card)}
+                        onClick={
+                            selectedCard && selectedCard === card
+                                ? resetSelectedCardOnClick
+                                : setSelectedCardOnClick(card)
+                        }
                     />
                 ))}
             </div>
