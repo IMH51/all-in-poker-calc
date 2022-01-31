@@ -1,15 +1,14 @@
 /** @jsxImportSource theme-ui */
 import { useMemo } from 'react';
-import { useReducerContext, RESET_TABLE } from '../../reducer';
-import { OddsType, ODDS, PLAYER_1, PLAYER_2, TABLE } from '../../fixtures';
+import { useReducerContext } from '../../reducer';
+import { OddsType } from '../../fixtures';
 
 export const Odds = () => {
-    const [state, dispatch] = useReducerContext();
-    const { [ODDS]: odds = {}, [PLAYER_1]: player1 = [], [PLAYER_2]: player2 = [], [TABLE]: table = [] } = state || {};
+    const { player1, player2, table, odds, resetTable } = useReducerContext();
 
-    const oddsAreas = useMemo(() => Object.keys(odds), [odds]);
+    const oddsAreas = useMemo(() => Object.keys(odds) as OddsType[], [odds]);
 
-    const cardsOnTable = useMemo(() => ![...player1, ...player2, ...table].length, [player1, player2, table]);
+    const cardsOnTable = useMemo(() => !(player1.length || player2.length || table.length), [player1, player2, table]);
 
     return (
         <div sx={{ margin: '20px 0', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -24,7 +23,7 @@ export const Odds = () => {
                     cursor: cardsOnTable ? 'default' : 'pointer',
                     opacity: cardsOnTable ? '0.5' : 'unset',
                 }}
-                onClick={() => dispatch && dispatch({ type: RESET_TABLE })}
+                onClick={resetTable}
                 disabled={cardsOnTable}
             >
                 Reset Table
@@ -33,7 +32,7 @@ export const Odds = () => {
             {oddsAreas.length ? (
                 <div sx={{ display: 'flex', gap: '20px' }}>
                     {oddsAreas.map((odd) => (
-                        <p key={odd}>{`${odd} - ${odds?.[odd as OddsType] || ''}`}</p>
+                        <p key={odd}>{`${odd} - ${odds?.[odd] || ''}`}</p>
                     ))}
                 </div>
             ) : (

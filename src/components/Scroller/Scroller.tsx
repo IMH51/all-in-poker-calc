@@ -1,23 +1,17 @@
 /** @jsxImportSource theme-ui */
 import { useMemo, useCallback } from 'react';
-import { CardObject, CARDS, PLAYER_1, PLAYER_2, SELECTED_CARD, TABLE } from '../../fixtures';
-import { useReducerContext, ADD_CARD, SET_SELECTED_CARD, RESET_SELECTED_CARD } from '../../reducer';
+import { CARDS, CardObject } from '../../fixtures';
+import { useReducerContext } from '../../reducer';
 import { Card } from '../Card';
 import { useDrop } from 'react-dnd';
 
 export const CardScroller = () => {
-    const [state, dispatch] = useReducerContext();
-    const {
-        [CARDS]: cards = [],
-        [PLAYER_1]: player1 = [],
-        [PLAYER_2]: player2 = [],
-        [TABLE]: table = [],
-        [SELECTED_CARD]: selectedCard,
-    } = state || {};
+    const { cards, player1, player2, table, selectedCard, addCardToArea, resetSelectedCard, setSelectedCard } =
+        useReducerContext();
 
     const [{ isOver }, ref] = useDrop({
         accept: 'CARD',
-        drop: (card: CardObject) => dispatch && dispatch({ type: ADD_CARD, payload: { area: CARDS, card } }),
+        drop: () => addCardToArea(CARDS),
         collect: (monitor) => ({
             isOver: monitor.isOver(),
         }),
@@ -33,13 +27,10 @@ export const CardScroller = () => {
         [cards, playerCardCodes],
     );
 
-    const setSelectedCardOnClick = useCallback(
-        (card: CardObject) => () => dispatch && dispatch({ type: SET_SELECTED_CARD, payload: { card } }),
-        [dispatch],
+    const onClickHandler = useCallback(
+        (card: CardObject) => (selectedCard && selectedCard === card ? resetSelectedCard() : setSelectedCard(card)),
+        [selectedCard, resetSelectedCard, setSelectedCard],
     );
-
-    const resetSelectedCardOnClick = useCallback(() => dispatch && dispatch({ type: RESET_SELECTED_CARD }), [dispatch]);
-
     return (
         <div
             ref={ref}
@@ -57,16 +48,7 @@ export const CardScroller = () => {
         >
             <div sx={{ display: 'flex', wrap: 'nowrap', gap: '10px', margin: '5px 0' }}>
                 {availableCards.map((card) => (
-                    <Card
-                        key={card.name}
-                        card={card}
-                        selected={card === selectedCard}
-                        onClick={
-                            selectedCard && selectedCard === card
-                                ? resetSelectedCardOnClick
-                                : setSelectedCardOnClick(card)
-                        }
-                    />
+                    <Card key={card.name} card={card} onClickHandler={onClickHandler} />
                 ))}
             </div>
         </div>

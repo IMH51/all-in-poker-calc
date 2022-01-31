@@ -1,48 +1,39 @@
 /** @jsxImportSource theme-ui */
 import { FunctionComponent, useMemo, useCallback, KeyboardEvent } from 'react';
-import { GameArea, CardObject, TABLE, SELECTED_CARD } from '../../fixtures';
+import { CardObject, GameArea, TABLE } from '../../fixtures';
 import { Card } from '../Card';
 import { useDrop } from 'react-dnd';
-import { ADD_CARD, REMOVE_CARD, SET_SELECTED_CARD, useReducerContext } from '../../reducer';
+import { useReducerContext } from '../../reducer';
 
 export const CardArea: FunctionComponent<CardAreaProps> = ({ area, limit }) => {
-    const [state, dispatch] = useReducerContext();
+    const { state, selectedCard, addCardToArea, removeCardFromArea } = useReducerContext();
 
     const cards = useMemo(() => [...(state?.[area] || [])], [state, area]);
 
-    const selectedCard = useMemo(() => state?.[SELECTED_CARD], [state]);
-
     const canAddSelectedCard = useMemo(() => selectedCard && cards.length < limit, [selectedCard, cards, limit]);
 
-    const addCardOnAreaClick = useCallback(
-        () => dispatch && selectedCard && dispatch({ type: ADD_CARD, payload: { area, card: selectedCard } }),
-        [area, dispatch, selectedCard],
+    const areaClickCallback = useCallback(() => {
+        canAddSelectedCard ? addCardToArea(area) : alert("You can't add any more cards to this area!");
+    }, [canAddSelectedCard, area, addCardToArea]);
+
+    const areaKeydownCallback = useCallback(
+        (keyboardEvent: KeyboardEvent) =>
+            canAddSelectedCard
+                ? keyboardEvent.code === 'Enter' && addCardToArea(area)
+                : alert("You can't add any more cards to this area!"),
+        [addCardToArea, canAddSelectedCard, area],
     );
 
-    const removeCardOnClick = useCallback(
-        (card: CardObject) => () => dispatch && dispatch({ type: REMOVE_CARD, payload: { area, card } }),
-        [area, dispatch],
-    );
-
-    const addCardOnClick = useCallback(
-        (card: CardObject) => () => dispatch && dispatch({ type: SET_SELECTED_CARD, payload: { card } }),
-        [dispatch],
-    );
-
-    const dropCallback = useCallback(
+    const cardCallback = useCallback(
         (card: CardObject) => {
-            if (cards.length < limit) {
-                dispatch && dispatch({ type: ADD_CARD, payload: { area, card } });
-            } else {
-                alert("You can't add any more cards to this area!");
-            }
+            selectedCard && selectedCard !== card ? addCardToArea(area) : removeCardFromArea(card, area);
         },
-        [area, cards, limit, dispatch],
+        [selectedCard, area, addCardToArea, removeCardFromArea],
     );
 
     const [{ isOver }, ref] = useDrop({
         accept: 'CARD',
-        drop: dropCallback,
+        drop: areaClickCallback,
         collect: (monitor) => ({
             isOver: monitor.isOver(),
         }),
@@ -50,12 +41,8 @@ export const CardArea: FunctionComponent<CardAreaProps> = ({ area, limit }) => {
 
     return (
         <div
-            onClick={canAddSelectedCard ? addCardOnAreaClick : undefined}
-            onKeyDown={
-                canAddSelectedCard
-                    ? (keyboardEvent: KeyboardEvent) => keyboardEvent.code === 'Enter' && addCardOnAreaClick()
-                    : undefined
-            }
+            onClick={areaClickCallback}
+            onKeyDown={areaKeydownCallback}
             role={canAddSelectedCard ? 'button' : undefined}
         >
             <h2 sx={{ textAlign: 'center', color: canAddSelectedCard ? 'yellow' : 'white' }}>{area}</h2>
@@ -78,11 +65,7 @@ export const CardArea: FunctionComponent<CardAreaProps> = ({ area, limit }) => {
                 }}
             >
                 {cards.map((card) => (
-                    <Card
-                        key={card.name}
-                        card={card}
-                        onClick={selectedCard && selectedCard !== card ? addCardOnClick(card) : removeCardOnClick(card)}
-                    />
+                    <Card key={card.name} card={card} onClickHandler={cardCallback} />
                 ))}
             </div>
         </div>

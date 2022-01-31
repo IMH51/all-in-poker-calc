@@ -1,38 +1,34 @@
 /** @jsxImportSource theme-ui */
-import { useMemo, FunctionComponent, MouseEventHandler, useCallback } from 'react';
+import { useMemo, FunctionComponent } from 'react';
 import { Themed } from 'theme-ui';
 import { useDrag } from 'react-dnd';
 
-import { cardCodes, CardObject, SELECTED_CARD } from '../../fixtures';
-import { useReducerContext, SET_SELECTED_CARD } from '../../reducer';
+import { cardCodes, CardObject } from '../../fixtures';
+import { useReducerContext } from '../../reducer';
 
-export const Card: FunctionComponent<CardProps> = ({ card, onClick, selected }) => {
-    const [state, dispatch] = useReducerContext();
-    const { [SELECTED_CARD]: selectedCard } = state || {};
+export const Card: FunctionComponent<CardProps> = ({ card, onClickHandler }) => {
+    const { selectedCard, setSelectedCard } = useReducerContext();
 
     const [, ref] = useDrag({
         type: 'CARD',
         item: card,
     });
 
-    const src = useMemo(() => getCard(card.code), [card]);
+    const isSelected = useMemo(() => card === selectedCard, [card, selectedCard]);
 
-    const setSelectedCardOnClick = useCallback(
-        () => dispatch && dispatch({ type: SET_SELECTED_CARD, payload: { card } }),
-        [card, dispatch],
-    );
+    const src = useMemo(() => getCardSrc(card.code), [card]);
 
     const onDragStartHandler = useMemo(
-        () => (selectedCard !== card ? setSelectedCardOnClick : undefined),
-        [card, setSelectedCardOnClick, selectedCard],
+        () => () => selectedCard !== card ? setSelectedCard(card) : undefined,
+        [card, setSelectedCard, selectedCard],
     );
 
     return cardCodes.includes(card.code) ? (
         <Themed.img
             ref={ref}
-            sx={{ border: selected ? '3px solid yellow' : '3px solid transparent', borderRadius: '4px' }}
+            sx={{ border: isSelected ? '3px solid yellow' : '3px solid transparent', borderRadius: '4px' }}
             src={src}
-            onClick={onClick}
+            onClick={() => onClickHandler && onClickHandler(card)}
             onDragStart={onDragStartHandler}
         />
     ) : null;
@@ -40,8 +36,7 @@ export const Card: FunctionComponent<CardProps> = ({ card, onClick, selected }) 
 
 type CardProps = {
     card: CardObject;
-    onClick?: MouseEventHandler;
-    selected?: boolean;
+    onClickHandler?: (card: CardObject) => void;
 };
 
-const getCard = (code: string) => require(`../../assets/cards/${code}.png`);
+const getCardSrc = (code: string) => require(`../../assets/cards/${code}.png`);

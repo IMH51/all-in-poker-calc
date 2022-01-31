@@ -14,7 +14,7 @@ export const App: FunctionComponent = () => (
     <DndProvider backend={HTML5Backend}>
         <ReducerContext.Provider value={useReducer<ReducerType>(combinedReducer, initialState)}>
             <Themed.div data-testid="app">
-                <h1 sx={{ textAlign: 'center' }}>All In: Drag and Drop Poker Calculator</h1>
+                <Themed.h1>All In: Drag and Drop Poker Calculator</Themed.h1>
                 <CardScroller />
                 <Odds />
                 <Table />

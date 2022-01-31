@@ -9,6 +9,9 @@ export const styles = {
         color: colors.text,
         background: colors.background,
     },
+    h1: {
+        textAlign: 'center',
+    },
     img: {
         width: '75px',
         zIndex: 1,
