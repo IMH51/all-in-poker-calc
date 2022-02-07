@@ -12,9 +12,16 @@ export const styles = {
     h1: {
         textAlign: 'center',
     },
+    h2: {
+        textAlign: 'center',
+    },
     img: {
         width: '75px',
         zIndex: 1,
         cursor: 'pointer',
+        borderWidth: '3px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '4px',
     },
 };

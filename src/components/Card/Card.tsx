@@ -26,7 +26,7 @@ export const Card: FunctionComponent<CardProps> = ({ card, onClickHandler }) => 
     return cardCodes.includes(card.code) ? (
         <Themed.img
             ref={ref}
-            sx={{ border: isSelected ? '3px solid yellow' : '3px solid transparent', borderRadius: '4px' }}
+            sx={{ borderColor: isSelected && 'yellow' }}
             src={src}
             onClick={() => onClickHandler && onClickHandler(card)}
             onDragStart={onDragStartHandler}

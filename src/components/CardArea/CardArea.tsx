@@ -1,4 +1,5 @@
 /** @jsxImportSource theme-ui */
+import { Themed } from 'theme-ui';
 import { FunctionComponent, useMemo, useCallback, KeyboardEvent } from 'react';
 import { CardObject, GameArea, TABLE } from '../../fixtures';
 import { Card } from '../Card';
@@ -41,11 +42,11 @@ export const CardArea: FunctionComponent<CardAreaProps> = ({ area, limit }) => {
 
     return (
         <div
-            onClick={areaClickCallback}
-            onKeyDown={areaKeydownCallback}
+            onClick={selectedCard ? areaClickCallback : undefined}
+            onKeyDown={selectedCard ? areaKeydownCallback : undefined}
             role={canAddSelectedCard ? 'button' : undefined}
         >
-            <h2 sx={{ textAlign: 'center', color: canAddSelectedCard ? 'yellow' : 'white' }}>{area}</h2>
+            <Themed.h2 sx={{ color: canAddSelectedCard && 'yellow' }}>{area}</Themed.h2>
             <div
                 ref={ref}
                 sx={{
