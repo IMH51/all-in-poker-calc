@@ -1,6 +1,6 @@
-import { storyThemeDecorator } from '../src/utils/story';
+import { Providers } from '../src/components/Providers';
 
-export const decorators = [storyThemeDecorator];
+export const decorators = [(story) => <Providers>{story()}</Providers>];
 
 export const parameters = {
     actions: { argTypesRegex: '^on[A-Z].*' },
