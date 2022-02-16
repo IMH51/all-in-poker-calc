@@ -1,6 +1,4 @@
-/** @jsxImportSource theme-ui */
-import { useMemo, FunctionComponent } from 'react';
-import { Themed } from 'theme-ui';
+import { useMemo, FunctionComponent, KeyboardEvent } from 'react';
 import { useDrag } from 'react-dnd';
 
 import { cardCodes, CardObject } from '../../fixtures';
@@ -14,7 +12,7 @@ export const Card: FunctionComponent<CardProps> = ({ card, onClickHandler }) => 
         item: card,
     });
 
-    const isSelected = useMemo(() => card === selectedCard, [card, selectedCard]);
+    // const isSelected = useMemo(() => card === selectedCard, [card, selectedCard]);
 
     const src = useMemo(() => getCardSrc(card.code), [card]);
 
@@ -24,13 +22,18 @@ export const Card: FunctionComponent<CardProps> = ({ card, onClickHandler }) => 
     );
 
     return cardCodes.includes(card.code) ? (
-        <Themed.img
-            ref={ref}
-            sx={{ borderColor: isSelected && 'yellow' }}
-            src={src}
+        <div
+            role="button"
+            tabIndex={0}
             onClick={() => onClickHandler && onClickHandler(card)}
+            onKeyDown={(e: KeyboardEvent) => {
+                e.key === 'Enter' && onClickHandler && onClickHandler(card);
+            }}
             onDragStart={onDragStartHandler}
-        />
+            ref={ref}
+        >
+            <img alt={card.name} src={src} />
+        </div>
     ) : null;
 };
 

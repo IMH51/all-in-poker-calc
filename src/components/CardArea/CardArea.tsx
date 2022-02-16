@@ -1,7 +1,5 @@
-/** @jsxImportSource theme-ui */
-import { Themed } from 'theme-ui';
 import { FunctionComponent, useMemo, useCallback, KeyboardEvent } from 'react';
-import { CardObject, GameArea, TABLE } from '../../fixtures';
+import { CardObject, GameArea } from '../../fixtures';
 import { Card } from '../Card';
 import { useDrop } from 'react-dnd';
 import { useReducerContext } from '../../reducer';
@@ -32,7 +30,7 @@ export const CardArea: FunctionComponent<CardAreaProps> = ({ area, limit }) => {
         [selectedCard, area, addCardToArea, removeCardFromArea],
     );
 
-    const [{ isOver }, ref] = useDrop({
+    const [, ref] = useDrop({
         accept: 'CARD',
         drop: areaClickCallback,
         collect: (monitor) => ({
@@ -46,25 +44,8 @@ export const CardArea: FunctionComponent<CardAreaProps> = ({ area, limit }) => {
             onKeyDown={selectedCard ? areaKeydownCallback : undefined}
             role={canAddSelectedCard ? 'button' : undefined}
         >
-            <Themed.h2 sx={{ color: canAddSelectedCard && 'yellow' }}>{area}</Themed.h2>
-            <div
-                ref={ref}
-                sx={{
-                    background: isOver ? 'rgba(0, 0, 0, 0.2)' : 'unset',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    gap: '20px',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: area === TABLE ? '490px' : '190px',
-                    height: '120px',
-                    border: canAddSelectedCard ? '3px solid yellow' : '3px solid white',
-                    borderRadius: '4px',
-                    margin: '20px',
-                    padding: '10px',
-                }}
-            >
+            <h2>{area}</h2>
+            <div ref={ref}>
                 {cards.map((card) => (
                     <Card key={card.name} card={card} onClickHandler={cardCallback} />
                 ))}

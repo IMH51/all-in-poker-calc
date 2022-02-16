@@ -1,4 +1,3 @@
-/** @jsxImportSource theme-ui */
 import { useMemo, useCallback } from 'react';
 import { CARDS, CardObject } from '../../fixtures';
 import { useReducerContext } from '../../reducer';
@@ -9,7 +8,7 @@ export const CardScroller = () => {
     const { cards, player1, player2, table, selectedCard, addCardToArea, resetSelectedCard, setSelectedCard } =
         useReducerContext();
 
-    const [{ isOver }, ref] = useDrop({
+    const [, ref] = useDrop({
         accept: 'CARD',
         drop: () => addCardToArea(CARDS),
         collect: (monitor) => ({
@@ -32,25 +31,10 @@ export const CardScroller = () => {
         [selectedCard, resetSelectedCard, setSelectedCard],
     );
     return (
-        <div
-            ref={ref}
-            sx={{
-                background: isOver ? 'rgba(0, 0, 0, 0.2)' : 'unset',
-                display: 'inline-flex',
-                width: '90%',
-                padding: '10px 20px',
-                margin: '0 3%',
-                overflow: 'overlay',
-                border: '3px solid white',
-                borderRadius: '25px',
-                '::-webkit-scrollbar': { background: 'transparent' },
-            }}
-        >
-            <div sx={{ display: 'flex', wrap: 'nowrap', gap: '10px', margin: '5px 0' }}>
-                {availableCards.map((card) => (
-                    <Card key={card.name} card={card} onClickHandler={onClickHandler} />
-                ))}
-            </div>
+        <div ref={ref}>
+            {availableCards.map((card) => (
+                <Card key={card.name} card={card} onClickHandler={onClickHandler} />
+            ))}
         </div>
     );
 };
