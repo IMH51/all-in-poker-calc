@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import { useMemo, FunctionComponent, KeyboardEvent } from 'react';
 import { useDrag } from 'react-dnd';
 
@@ -12,7 +13,7 @@ export const Card: FunctionComponent<CardProps> = ({ card, onClickHandler }) => 
         item: card,
     });
 
-    // const isSelected = useMemo(() => card === selectedCard, [card, selectedCard]);
+    const isSelected = useMemo(() => card === selectedCard, [card, selectedCard]);
 
     const src = useMemo(() => getCardSrc(card.code), [card]);
 
@@ -32,7 +33,7 @@ export const Card: FunctionComponent<CardProps> = ({ card, onClickHandler }) => 
             onDragStart={onDragStartHandler}
             ref={ref}
         >
-            <img alt={card.name} src={src} />
+            <img sx={{ variant: isSelected ? 'cards.selected' : 'cards.default' }} alt={card.name} src={src} />
         </div>
     ) : null;
 };

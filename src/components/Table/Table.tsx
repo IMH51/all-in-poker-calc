@@ -1,8 +1,9 @@
+/** @jsxImportSource theme-ui */
 import { PLAYER_1, PLAYER_2, TABLE, GameArea } from '../../fixtures';
 import { CardArea } from '../CardArea';
 
 export const Table = () => {
-    const playerArray: GameArea[] = [PLAYER_1, TABLE, PLAYER_2];
+    const playerArray: GameArea[] = [PLAYER_1, PLAYER_2, TABLE];
 
     return (
         <div>

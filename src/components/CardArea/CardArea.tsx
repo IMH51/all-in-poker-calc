@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import { FunctionComponent, useMemo, useCallback, KeyboardEvent } from 'react';
 import { CardObject, GameArea } from '../../fixtures';
 import { Card } from '../Card';
@@ -45,7 +46,7 @@ export const CardArea: FunctionComponent<CardAreaProps> = ({ area, limit }) => {
             role={canAddSelectedCard ? 'button' : undefined}
         >
             <h2>{area}</h2>
-            <div ref={ref}>
+            <div sx={{ variant: 'layout.cardArea' }} ref={ref}>
                 {cards.map((card) => (
                     <Card key={card.name} card={card} onClickHandler={cardCallback} />
                 ))}

@@ -7,12 +7,16 @@
     "author": "Ian Harrison",
     "license": "MIT",
     "dependencies": {
+        "@emotion/react": "^11.7.1",
+        "@emotion/styled": "^11.6.0",
+        "@mdx-js/react": "^2.0.0",
         "@storybook/addon-viewport": "^6.4.19",
         "poker-odds-calc": "^0.0.14",
         "react": "^17.0.2",
         "react-dnd": "^14.0.5",
         "react-dnd-html5-backend": "^14.1.0",
-        "react-dom": "^17.0.2"
+        "react-dom": "^17.0.2",
+        "theme-ui": "^0.13.1"
     },
     "devDependencies": {
         "@babel/cli": "^7.16.7",

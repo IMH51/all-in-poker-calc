@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import { useMemo, useCallback } from 'react';
 import { CARDS, CardObject } from '../../fixtures';
 import { useReducerContext } from '../../reducer';
@@ -31,7 +32,7 @@ export const CardScroller = () => {
         [selectedCard, resetSelectedCard, setSelectedCard],
     );
     return (
-        <div ref={ref}>
+        <div sx={{ variant: 'layout.scroller' }} ref={ref}>
             {availableCards.map((card) => (
                 <Card key={card.name} card={card} onClickHandler={onClickHandler} />
             ))}
