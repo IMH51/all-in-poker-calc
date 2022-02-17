@@ -7,6 +7,7 @@
     "author": "Ian Harrison",
     "license": "MIT",
     "dependencies": {
+        "@storybook/addon-viewport": "^6.4.19",
         "poker-odds-calc": "^0.0.14",
         "react": "^17.0.2",
         "react-dnd": "^14.0.5",
