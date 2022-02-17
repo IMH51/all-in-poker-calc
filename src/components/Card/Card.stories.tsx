@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Card } from '.';
-import { cardData } from '../../fixtures';
+import { cardData, CardObject } from '../../fixtures';
 
 const cardArgsObject = cardData.reduce(
     (cardObject, card) => ({
@@ -15,7 +15,7 @@ export default {
     component: Card,
     args: {
         card: cardData[0],
-        onClickHandler: () => null,
+        onClickHandler: (card: CardObject) => console.log(`${card.name} clicked!`),
     },
     argTypes: {
         card: {
